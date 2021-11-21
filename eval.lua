@@ -4,8 +4,8 @@ opSubtract = "-"
 opMultiply = "*"
 opDivide = "/"
 operator = "[%+%-%*%/]"
-anyInteger = "%d+"
-expressionPattern = anyInteger .. operator .. anyInteger
+anyNumber = "%d+%.?%d*"
+expressionPattern = anyNumber .. operator .. anyNumber
 onlyExpressionPattern =  "^".. expressionPattern .. "$"
 
 function FindMathExpression(s)

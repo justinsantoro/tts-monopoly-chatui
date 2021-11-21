@@ -5,11 +5,11 @@ require("players")
 local splitter = ";"
 local optionalSpace = "%s?"
 local txType = "[%+%-%=]"
-local optionalInteger = "%d*"
+local optionalNumber = "%d*%.?%d*"
 local optionalOperator = operator .. "?"
 local anyLetters = "%a"
 
-local cmdPattern = anyLetters .. txType .. anyInteger .. optionalOperator .. optionalInteger
+local cmdPattern = anyLetters .. txType .. anyNumber .. optionalOperator .. optionalNumber
 
 local function split(s)
     local t={}
@@ -57,10 +57,15 @@ local function transactionType(cmd)
     return nil
 end
 
+-- https://stackoverflow.com/a/58411671/13938612
+local function round(num)
+    return num + (2^52 + 2^51) - (2^52 + 2^51)
+end
+
 local function transactionAmnt(cmd)
     local exp = FindMathExpression(cmd)
     if exp ~= nil then
-        return Eval(exp)
+        return round(Eval(exp))
     end
     local j, k = string.find(cmd, "%d+")
     local amnt = string.sub(cmd, j, k)
